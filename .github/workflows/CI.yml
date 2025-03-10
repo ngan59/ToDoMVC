@@ -1,4 +1,5 @@
 name: Selenium Java CI
+
 on: [push, pull_request]
 
 jobs:
@@ -22,16 +23,11 @@ jobs:
 
       - name: Install ChromeDriver
         run: |
-          CHROME_VERSION=$(google-chrome --version | awk '{print $3}' | cut -d'.' -f1)
-          echo "Chrome version: $CHROME_VERSION"
-          wget -q "https://chromedriver.storage.googleapis.com/$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION)/chromedriver_linux64.zip"
-          unzip chromedriver_linux64.zip
-          sudo mv chromedriver /usr/local/bin/
-          sudo chmod +x /usr/local/bin/chromedriver
+          sudo apt install -y chromium-chromedriver
           chromedriver --version
 
       - name: Build with Maven
-        run: mvn clean install
+        run: mvn clean install --batch-mode --fail-at-end
 
       - name: Run Selenium Tests
         run: mvn test
