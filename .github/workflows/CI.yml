@@ -1,6 +1,10 @@
 name: Selenium Java CI
 
-on: [push, pull_request]
+on: 
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   test:
@@ -15,6 +19,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
+          cache: maven
 
       - name: Install Google Chrome
         run: |
@@ -29,5 +34,5 @@ jobs:
       - name: Build with Maven
         run: mvn clean install --batch-mode --fail-at-end
 
-      - name: Run Selenium Tests
+      - name: Tests
         run: mvn test
